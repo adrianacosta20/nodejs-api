@@ -14,9 +14,9 @@ app.get('/', (req,res)=>{
 
 app.get('data', (res,req)=>{
     res.json(jsonData);
-})
+});
 
 app.listen(port, host, () =>{
     console.log('Listening on http://localhost:',port);
 
-})
+});
