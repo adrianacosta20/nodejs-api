@@ -1,37 +1,49 @@
 var express = require('express');
 var app = express();
+var path = require('path');
 var port = 9091;
 var host = '127.0.0.1';
 
-app.use(express.static('client'));
+app.use(function (req, res, next) {
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:9091');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, content-type');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    next();
+});
+
+app.use(express.static(__dirname+'/../client'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-var lions = [
+var cars = [
     {
         'id': 1,
-        'name': 'Simba',
-        'pride': 'The cool cats',
-        'age': 3,
-        'gender': 'male'
+        'name': 'Toyota',
+        'description': 'Japanese car',
+        'year': 2010,
     },
     {
         'id': 2,
-        'name': 'Mufasa',
-        'pride': 'The bad cats',
-        'age': 4,
-        'gender': 'male'
+        'name': 'Ford',
+        'description': 'American car',
+        'year': 2004
     }
 ];
+
 var id = 2;
 
-app.get('/lion', (req,res)=>{
-    res.json(lions);
+app.get('/', (req,res)=>{
+    res.sendFile(path.join(__dirname+'/../client/index.html'));
 });
 
-app.get('/lions/:id', (req,res)=>{
-    var lion = lions.find(lion=>{
-        return lion.id == req.params.id;
+app.get('/get-cars', (req,res)=>{
+    res.json(cars);
+});
+
+app.get('/cars/:id', (req,res)=>{
+    var car = cars.find(car=>{
+        return car.id == req.params.id;
     });
     res.json(lion || {});
 });
