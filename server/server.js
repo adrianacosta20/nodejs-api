@@ -61,15 +61,15 @@ app.post('/add-car', (req,res)=>{
 // });
 
 app.delete('/delete-car', (req,res)=>{
-    console.log(req.body);
-    // var lion = lions.findIndex(lion=> lion.id == req.params.id);
-    // if(!lions[lion]){
-    //     res.send();
-    // }else{
-    //     var deletedLion = lions[lion];
-    //     lions.splice(lion,1);
-    //     res.json(deletedLion);
-    // };
+    console.log('ID',req.body.id);
+    var car = cars.findIndex(car=> car.id == req.body.id);
+    if(!cars[car]){
+        res.send();
+    }else{
+        var deletedCar = cars[car];
+        cars.splice(car,1);
+        res.json(deletedCar);
+    };
 });
 
 app.listen(port, host, () => {

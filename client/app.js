@@ -11,6 +11,7 @@ window.onload = () => {
     //     console.log(e);
     // });
 
+
 };
 
 function getData() {
@@ -24,6 +25,7 @@ function getData() {
     })
         .then(response => response.json())
         .then(response => {
+
             console.log(response);
             response.forEach(item => {
                 document.getElementById('root').innerHTML += `
@@ -47,14 +49,19 @@ function getData() {
                 del.innerHTML = "DELETE";
                 document.querySelectorAll('#buttons').forEach(element => {
                     element.append(del);
-                })
+                });
+                document.querySelectorAll('#delete').forEach(element => {
+                    element.onclick = (e) => {
+                        console.log(e.target.parentNode.parentNode.id);
+                        removeCar({ id: e.target.parentNode.parentNode.id });
+                    };
+                });
             });
         });
-    document.querySelectorAll('#delete').forEach(element=>{
-        element.onclick = (e)=>{
-            console.log(e);
-        };
-    });
+
+    // document.getElementById('delete').addEventListener('click', function(e){
+    //     console.log(e);
+    // });
 };
 
 function addData(object) {
@@ -83,15 +90,26 @@ function addData(object) {
                 </div>
             </div>
             <div id="buttons">
-                <button id="delete" type="submit">Delete</button>
-                <button id="update" type="submit">Update</button>
+
             </div>
         </div>
     `
+            var del = document.createElement('button');
+            del.id = 'delete';
+            del.innerHTML = "DELETE";
+            document.querySelectorAll('#buttons').forEach(element => {
+                element.append(del);
+            });
+            document.querySelectorAll('#delete').forEach(element => {
+                element.onclick = (e) => {
+                    console.log(e.target.parentNode.parentNode.id);
+                    removeCar({ id: e.target.parentNode.parentNode.id });
+                };
+            });
         });
-    document.getElementById('delete').onclick = function () {
-        console.log('entered')
-    };
+    // document.getElementById('delete').onclick = function () {
+    //     console.log('entered')
+    // };
 };
 
 
@@ -124,7 +142,7 @@ function displayAddForm() {
 
 function removeCar(id) {
     fetch('http://localhost:9091/delete-car', {
-        method: 'POST',
+        method: 'DELETE',
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
@@ -134,6 +152,7 @@ function removeCar(id) {
     })
         .then(response => response.json())
         .then(response => {
-
+            console.log('RESPONSE', response);
+            document.getElementById(response.id).remove();
         });
 };
